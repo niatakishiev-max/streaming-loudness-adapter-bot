@@ -1,0 +1,19 @@
+# Local audio test files and generated renders
+*.wav
+*.aif
+*.aiff
+*.flac
+*.mp3
+*_report.txt
+
+# Runtime work directory
+bot_work/
+
+# Secrets and local env
+.env
+*.local
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+node_modules/
