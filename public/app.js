@@ -1,7 +1,7 @@
 const state = {
   job: null,
   presets: [],
-  selectedPreset: "spotify",
+  selectedPreset: null,
   uploaded: false,
 };
 
@@ -15,6 +15,15 @@ const resultPanel = document.querySelector("#resultPanel");
 const meterCanvas = document.querySelector("#meterCanvas");
 const resultCacheKey = "loudness-adapter-result";
 const resultCacheTtlMs = 20 * 60 * 1000;
+
+function setWorkflowStep(step) {
+  const steps = ["upload", "platform", "download"];
+  const activeIndex = steps.indexOf(step);
+  document.querySelectorAll(".workflow-step").forEach((element, index) => {
+    element.classList.toggle("active", index === activeIndex);
+    element.classList.toggle("complete", index < activeIndex);
+  });
+}
 
 function setStatus(text, value = 0) {
   statusText.textContent = text;
@@ -71,6 +80,7 @@ function renderPresets() {
     const button = document.createElement("button");
     button.className = `preset-card${preset.id === state.selectedPreset ? " active" : ""}`;
     button.type = "button";
+    button.disabled = !state.uploaded;
     button.innerHTML = `
       <h3>${preset.label}</h3>
       <div class="target">${preset.targetI} LUFS / ${preset.truePeak} dBTP</div>
@@ -90,6 +100,7 @@ function showInputAnalysis(analysis) {
 }
 
 function showResult(data) {
+  setWorkflowStep("download");
   resultPanel.hidden = false;
   document.querySelector("#resultTitle").textContent = `${data.preset.label} export ready`;
   document.querySelector("#outputLufs").textContent = formatNumber(data.outputAnalysis.input_i);
@@ -142,6 +153,8 @@ async function uploadFile(file) {
   state.job.fileName = data.fileName;
   state.job.analysis = data.analysis;
   state.uploaded = true;
+  setWorkflowStep("platform");
+  renderPresets();
   setStatus(`Analysis complete: ${data.fileName}. Choose a platform target below to create the WAV.`, 100);
   showInputAnalysis(data.analysis);
 }
