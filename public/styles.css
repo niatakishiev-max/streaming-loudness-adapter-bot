@@ -30,6 +30,8 @@ body {
   margin: 0 auto;
 }
 
+[hidden] { display: none !important; }
+
 .brand-row, .section-heading, .result-panel {
   display: flex;
   align-items: flex-end;
