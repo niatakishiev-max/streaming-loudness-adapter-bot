@@ -111,6 +111,27 @@ function showResult(data) {
   drawMeter(state.job?.analysis, data.outputAnalysis);
 }
 
+async function downloadReport(event) {
+  event.preventDefault();
+  const link = event.currentTarget;
+  if (!link.href || link.getAttribute("href") === "#") return;
+
+  try {
+    const response = await fetch(link.href);
+    if (!response.ok) throw new Error("Report is no longer available.");
+
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const download = document.createElement("a");
+    download.href = objectUrl;
+    download.download = "loudness-adapter-report.txt";
+    download.click();
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1_000);
+  } catch (error) {
+    setStatus(`Error: ${error.message}`, 0);
+  }
+}
+
 function saveResult(data) {
   sessionStorage.setItem(resultCacheKey, JSON.stringify({ savedAt: Date.now(), data }));
 }
@@ -196,6 +217,7 @@ async function handleFile(file) {
 }
 
 fileInput.addEventListener("change", () => handleFile(fileInput.files[0]));
+document.querySelector("#downloadReport").addEventListener("click", downloadReport);
 
 dropZone.addEventListener("dragover", (event) => {
   event.preventDefault();
