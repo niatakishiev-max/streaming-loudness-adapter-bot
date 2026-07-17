@@ -7,6 +7,7 @@
   "scripts": {
     "check": "node loudness_adapter.js --check",
     "adapt": "node loudness_adapter.js",
-    "bot": "node telegram_bot.js"
+    "bot": "node telegram_bot.js",
+    "web": "node web_server.js"
   }
 }

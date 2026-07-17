@@ -5,7 +5,7 @@ Telegram bot and local CLI for preparing audio files for streaming loudness targ
 ## Features
 
 - Analyze WAV, AIFF, FLAC, and MP3 with ffmpeg loudnorm.
-- Export Spotify, YouTube, Apple Music, and Hip-Hop Master versions.
+- Export Spotify, YouTube, Apple Music, TIDAL, Amazon Music, Deezer, SoundCloud, podcast, and safe-delivery versions.
 - Generate TXT loudness reports.
 - Telegram bot flow with preset buttons.
 - Browser upload mode for files larger than Telegram's direct download limit.
@@ -20,8 +20,19 @@ Telegram bot and local CLI for preparing audio files for streaming loudness targ
 
 ```bash
 node loudness_adapter.js "track.wav" --preset spotify
-node loudness_adapter.js "track.wav" --preset hiphop
 node loudness_adapter.js "track.wav" --analyze-only
+```
+
+## Web Service
+
+```bash
+node web_server.js
+```
+
+Open:
+
+```text
+http://localhost:3000
 ```
 
 ## Telegram Bot
@@ -45,5 +56,10 @@ node telegram_bot.js
 - `spotify`: -14 LUFS, -1.0 dBTP
 - `youtube`: -14 LUFS, -1.0 dBTP
 - `apple`: -16 LUFS, -1.0 dBTP
-- `hiphop`: -10 LUFS, -1.0 dBTP with gentle EQ cleanup
+- `tidal`: -14 LUFS, -1.0 dBTP
+- `amazon`: -14 LUFS, -1.0 dBTP
+- `deezer`: -15 LUFS, -1.0 dBTP
+- `soundcloud`: -14 LUFS, -1.0 dBTP
+- `podcast`: -16 LUFS, -1.0 dBTP
+- `custom_safe`: -14 LUFS, -2.0 dBTP
 

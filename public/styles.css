@@ -1,0 +1,187 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f1ec;
+  --ink: #151515;
+  --muted: #66615b;
+  --line: #d9d1c5;
+  --panel: #fffaf2;
+  --dark: #202323;
+  --blue: #246bfe;
+  --green: #1f8a5b;
+  --amber: #b56a1d;
+  --red: #bd3b32;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.shell {
+  min-height: 100vh;
+  padding: 28px;
+}
+
+.workspace {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.brand-row, .section-heading, .result-panel {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 0; font-size: clamp(42px, 8vw, 86px); line-height: .95; letter-spacing: 0; }
+h2 { margin-bottom: 8px; font-size: 24px; letter-spacing: 0; }
+p { color: var(--muted); line-height: 1.55; }
+
+.author {
+  padding-bottom: 12px;
+  color: var(--muted);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.author:hover, .site-footer a:hover { color: var(--blue); }
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.site-footer a {
+  color: var(--ink);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.upload-zone {
+  position: relative;
+  min-height: 360px;
+  margin-top: 32px;
+  border: 1px solid var(--line);
+  background: var(--dark);
+  color: white;
+  overflow: hidden;
+}
+
+.upload-zone.dragging { outline: 3px solid var(--blue); }
+#meterCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.upload-copy {
+  position: relative;
+  max-width: 560px;
+  padding: 44px;
+}
+.upload-copy h2 { font-size: 42px; line-height: 1; }
+.upload-copy p { color: #d8d3cb; }
+
+.file-button, .action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--ink);
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+.file-button input { display: none; }
+
+.status-panel {
+  margin-top: 16px;
+  padding: 16px 0;
+}
+.status-line { margin-bottom: 8px; color: var(--muted); font-weight: 700; }
+progress { width: 100%; height: 14px; accent-color: var(--green); }
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 36px;
+}
+.metric {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 18px;
+}
+.metric span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.metric strong { display: block; margin-top: 8px; font-size: 30px; }
+
+.preset-section { margin-top: 28px; }
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.preset-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 18px;
+  text-align: left;
+  cursor: pointer;
+}
+.preset-card:hover, .preset-card.active { border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+.preset-card h3 { margin: 0 0 12px; font-size: 20px; }
+.preset-card .target { color: var(--ink); font-weight: 900; }
+.preset-card p { margin-bottom: 0; font-size: 14px; }
+
+.result-panel {
+  align-items: stretch;
+  margin-top: 28px;
+  border: 1px solid var(--line);
+  background: #e7f0eb;
+  padding: 22px;
+}
+.compact { margin: 0; flex: 1; }
+.actions { display: flex; gap: 10px; align-items: center; }
+.action.primary { background: var(--blue); color: white; border-color: var(--blue); }
+
+@media (max-width: 800px) {
+  .shell { padding: 18px; }
+  .brand-row, .section-heading, .result-panel { display: block; }
+  .upload-copy { padding: 28px; }
+  .upload-copy h2 { font-size: 32px; }
+  .analysis-grid, .preset-grid { grid-template-columns: 1fr; }
+  .actions { display: grid; margin-top: 16px; }
+  .site-footer { display: block; }
+  .site-footer span { display: block; margin-top: 4px; }
+}

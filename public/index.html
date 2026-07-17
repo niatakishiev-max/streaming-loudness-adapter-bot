@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loudness Adapter</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="workspace">
+      <div class="brand-row">
+        <div>
+          <p class="eyebrow">Free delivery tool</p>
+          <h1>Loudness Adapter</h1>
+        </div>
+        <a class="author" href="https://djnizami.ru" target="_blank" rel="noreferrer">by DJ Nizami</a>
+      </div>
+
+      <div class="upload-zone" id="dropZone">
+        <canvas id="meterCanvas" width="900" height="180" aria-hidden="true"></canvas>
+        <div class="upload-copy">
+          <h2>Drop WAV, AIFF, FLAC, or MP3</h2>
+          <p>Analyze loudness, choose a platform target, export a platform-ready WAV.</p>
+          <label class="file-button">
+            <input id="fileInput" type="file" accept="audio/*,.wav,.aiff,.aif,.flac,.mp3">
+            Choose audio
+          </label>
+        </div>
+      </div>
+
+      <section class="status-panel" id="statusPanel">
+        <div class="status-line" id="statusText">Waiting for audio file.</div>
+        <progress id="progress" max="100" value="0"></progress>
+      </section>
+
+      <section class="analysis-grid" id="analysisGrid" hidden>
+        <div class="metric">
+          <span>Integrated LUFS</span>
+          <strong id="metricLufs">-</strong>
+        </div>
+        <div class="metric">
+          <span>True Peak</span>
+          <strong id="metricPeak">-</strong>
+        </div>
+        <div class="metric">
+          <span>LRA</span>
+          <strong id="metricLra">-</strong>
+        </div>
+      </section>
+
+      <section class="preset-section">
+        <div class="section-heading">
+          <h2>Platform Targets</h2>
+          <p>No EQ, no genre mastering, only loudness and true-peak adaptation.</p>
+        </div>
+        <div class="preset-grid" id="presetGrid"></div>
+      </section>
+
+      <section class="result-panel" id="resultPanel" hidden>
+        <div>
+          <p class="eyebrow">Export ready</p>
+          <h2 id="resultTitle">Result</h2>
+        </div>
+        <div class="analysis-grid compact">
+          <div class="metric">
+            <span>Output LUFS</span>
+            <strong id="outputLufs">-</strong>
+          </div>
+          <div class="metric">
+            <span>Output True Peak</span>
+            <strong id="outputPeak">-</strong>
+          </div>
+          <div class="metric">
+            <span>Output LRA</span>
+            <strong id="outputLra">-</strong>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="action primary" id="downloadWav" href="#">Download WAV</a>
+          <a class="action" id="downloadReport" href="#">Download report</a>
+        </div>
+      </section>
+      <footer class="site-footer">
+        <a href="https://djnizami.ru" target="_blank" rel="noreferrer">DJ Nizami</a>
+        <span>Music production and DJ education</span>
+      </footer>
+    </section>
+  </main>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

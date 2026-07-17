@@ -9,38 +9,63 @@ export const PRESETS = {
     targetI: -14,
     truePeak: -1.0,
     lra: 11,
-    chain: [],
-    notes: "Streaming loudness delivery.",
+    notes: "Video platform delivery target.",
   },
   spotify: {
     label: "Spotify",
     targetI: -14,
     truePeak: -1.0,
     lra: 11,
-    chain: [],
-    notes: "Streaming loudness delivery.",
+    notes: "Music streaming delivery target.",
   },
   apple: {
     label: "Apple Music",
     targetI: -16,
     truePeak: -1.0,
     lra: 11,
-    chain: [],
-    notes: "Streaming loudness delivery.",
+    notes: "Apple Sound Check oriented delivery target.",
   },
-  hiphop: {
-    label: "Hip-Hop Master",
-    targetI: -10,
+  tidal: {
+    label: "TIDAL",
+    targetI: -14,
     truePeak: -1.0,
-    lra: 8,
-    chain: [
-      "highpass=f=28",
-      "equalizer=f=250:t=q:w=1.1:g=-1.5",
-      "equalizer=f=350:t=q:w=1.0:g=-1.0",
-      "equalizer=f=8500:t=q:w=1.2:g=-1.0",
-      "lowpass=f=19000",
-    ],
-    notes: "Gentle low cleanup, mud reduction, high-frequency control, louder hip-hop target.",
+    lra: 11,
+    notes: "Music streaming delivery target.",
+  },
+  amazon: {
+    label: "Amazon Music",
+    targetI: -14,
+    truePeak: -1.0,
+    lra: 11,
+    notes: "Music streaming delivery target.",
+  },
+  deezer: {
+    label: "Deezer",
+    targetI: -15,
+    truePeak: -1.0,
+    lra: 11,
+    notes: "Music streaming delivery target.",
+  },
+  soundcloud: {
+    label: "SoundCloud",
+    targetI: -14,
+    truePeak: -1.0,
+    lra: 11,
+    notes: "Web playback delivery target.",
+  },
+  podcast: {
+    label: "Podcast / Speech",
+    targetI: -16,
+    truePeak: -1.0,
+    lra: 11,
+    notes: "Speech and podcast delivery target.",
+  },
+  custom_safe: {
+    label: "Safe Delivery",
+    targetI: -14,
+    truePeak: -2.0,
+    lra: 11,
+    notes: "Extra true-peak headroom for lossy encoding.",
   },
 };
 
@@ -56,7 +81,11 @@ Presets:
   youtube  -14 LUFS, -1.0 dBTP
   spotify  -14 LUFS, -1.0 dBTP
   apple    -16 LUFS, -1.0 dBTP
-  hiphop   -10 LUFS, -1.0 dBTP, gentle EQ cleanup
+  tidal    -14 LUFS, -1.0 dBTP
+  amazon   -14 LUFS, -1.0 dBTP
+  deezer   -15 LUFS, -1.0 dBTP
+  soundcloud -14 LUFS, -1.0 dBTP
+  podcast  -16 LUFS, -1.0 dBTP
 `);
 }
 

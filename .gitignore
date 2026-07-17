@@ -8,6 +8,7 @@
 
 # Runtime work directory
 bot_work/
+web_work/
 
 # Secrets and local env
 .env
