@@ -126,6 +126,7 @@ function download(response, job, filePath) {
   stream.on("error", release);
   response.on("close", release);
   stream.pipe(response);
+  return true;
 }
 
 function removeJob(job) {
