@@ -13,6 +13,8 @@ const presetGrid = document.querySelector("#presetGrid");
 const analysisGrid = document.querySelector("#analysisGrid");
 const resultPanel = document.querySelector("#resultPanel");
 const meterCanvas = document.querySelector("#meterCanvas");
+const resultCacheKey = "loudness-adapter-result";
+const resultCacheTtlMs = 20 * 60 * 1000;
 
 function setStatus(text, value = 0) {
   statusText.textContent = text;
@@ -98,6 +100,25 @@ function showResult(data) {
   drawMeter(state.job?.analysis, data.outputAnalysis);
 }
 
+function saveResult(data) {
+  sessionStorage.setItem(resultCacheKey, JSON.stringify({ savedAt: Date.now(), data }));
+}
+
+function restoreResult() {
+  const raw = sessionStorage.getItem(resultCacheKey);
+  if (!raw) return;
+  try {
+    const saved = JSON.parse(raw);
+    if (Date.now() - saved.savedAt > resultCacheTtlMs) {
+      sessionStorage.removeItem(resultCacheKey);
+      return;
+    }
+    showResult(saved.data);
+  } catch {
+    sessionStorage.removeItem(resultCacheKey);
+  }
+}
+
 async function loadPresets() {
   const response = await fetch("/api/presets");
   const data = await response.json();
@@ -107,6 +128,7 @@ async function loadPresets() {
 
 async function uploadFile(file) {
   resultPanel.hidden = true;
+  sessionStorage.removeItem(resultCacheKey);
   setStatus("Creating upload session...", 5);
   const jobResponse = await fetch("/api/jobs", { method: "POST" });
   state.job = await jobResponse.json();
@@ -143,6 +165,7 @@ async function processPreset(presetId) {
 
   setStatus("Export complete.", 100);
   showResult(data);
+  saveResult(data);
 }
 
 async function handleFile(file) {
@@ -168,5 +191,7 @@ dropZone.addEventListener("drop", (event) => {
   handleFile(event.dataTransfer.files[0]);
 });
 
-loadPresets().catch((error) => setStatus(`Error: ${error.message}`, 0));
+loadPresets()
+  .then(restoreResult)
+  .catch((error) => setStatus(`Error: ${error.message}`, 0));
 drawMeter();
