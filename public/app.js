@@ -1,4 +1,4 @@
-﻿const state = {
+const state = {
   job: null,
   presets: [],
   selectedPreset: "spotify",
@@ -46,24 +46,21 @@ function drawMeter(input = null, output = null) {
   }
   ctx.globalAlpha = 1;
 
-  const drawNeedle = (lufs, color, label, y) => {
+  const drawNeedle = (lufs, color) => {
     if (!Number.isFinite(Number(lufs))) return;
     const min = -24;
     const max = -8;
     const x = Math.min(width - 40, Math.max(40, ((Number(lufs) - min) / (max - min)) * width));
     ctx.strokeStyle = color;
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(x, 24);
-    ctx.lineTo(x, height - 24);
+    ctx.moveTo(x, height - 42);
+    ctx.lineTo(x, height - 16);
     ctx.stroke();
-    ctx.fillStyle = color;
-    ctx.font = "700 22px system-ui";
-    ctx.fillText(`${label} ${Number(lufs).toFixed(1)} LUFS`, 34, y);
   };
 
-  drawNeedle(input?.input_i, "#f4f1ec", "In", 44);
-  drawNeedle(output?.input_i, "#4ea1ff", "Out", 76);
+  drawNeedle(input?.input_i, "#f4f1ec");
+  drawNeedle(output?.input_i, "#4ea1ff");
 }
 
 function renderPresets() {
