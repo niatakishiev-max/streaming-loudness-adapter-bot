@@ -147,27 +147,31 @@ async function uploadFile(file) {
 }
 
 async function processPreset(presetId) {
-  state.selectedPreset = presetId;
-  renderPresets();
-  if (!state.job || !state.uploaded) {
-    setStatus("Choose an audio file first.", 0);
-    return;
+  try {
+    state.selectedPreset = presetId;
+    renderPresets();
+    if (!state.job || !state.uploaded) {
+      setStatus("Choose an audio file first.", 0);
+      return;
+    }
+
+    setStatus("Rendering platform-ready WAV...", 35);
+    const response = await fetch(`/api/jobs/${state.job.id}/process`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ secret: state.job.secret, preset: presetId }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Processing failed.");
+
+    setStatus("Export complete.", 100);
+    showResult(data);
+    saveResult(data);
+  } catch (error) {
+    console.error(error);
+    setStatus(`Error: ${error.message}`, 0);
   }
-
-  setStatus("Rendering platform-ready WAV...", 35);
-  const response = await fetch(`/api/jobs/${state.job.id}/process`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ secret: state.job.secret, preset: presetId }),
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || "Processing failed.");
-
-  setStatus("Export complete.", 100);
-  showResult(data);
-  saveResult(data);
 }
-
 async function handleFile(file) {
   try {
     if (!file) return;
