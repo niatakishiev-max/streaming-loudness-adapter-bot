@@ -2,7 +2,7 @@
   "name": "streaming-loudness-adapter",
   "version": "0.1.0",
   "private": true,
-  "description": "MVP CLI for adapting audio loudness to streaming platform presets.",
+  "description": "Privacy-first web service for adapting audio loudness to streaming platform presets.",
   "type": "module",
   "scripts": {
     "check": "node loudness_adapter.js --check",
