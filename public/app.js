@@ -142,7 +142,7 @@ async function uploadFile(file) {
   state.job.fileName = data.fileName;
   state.job.analysis = data.analysis;
   state.uploaded = true;
-  setStatus(`Analysis complete: ${data.fileName}`, 100);
+  setStatus(`Analysis complete: ${data.fileName}. Choose a platform target below to create the WAV.`, 100);
   showInputAnalysis(data.analysis);
 }
 
