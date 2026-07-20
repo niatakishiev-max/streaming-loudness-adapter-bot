@@ -65,7 +65,11 @@ function publicPresetList() {
 }
 
 function serveStatic(request, response, url) {
-  const pathname = url.pathname === "/" ? "/index.html" : url.pathname;
+  const pathname = url.pathname === "/"
+    ? "/index.html"
+    : url.pathname.endsWith("/")
+      ? `${url.pathname}index.html`
+      : url.pathname;
   const filePath = path.normalize(path.join(publicDir, pathname));
   if (!filePath.startsWith(publicDir) || !existsSync(filePath)) {
     response.writeHead(404).end("Not found");

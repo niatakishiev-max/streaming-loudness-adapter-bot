@@ -54,14 +54,26 @@ h2 { margin-bottom: 8px; font-size: 24px; letter-spacing: 0; }
 p { color: var(--muted); line-height: 1.55; }
 .brand-lead { max-width: 620px; margin: 16px 0 0; font-size: 18px; }
 
-.author {
+.header-links {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.author, .language-link {
   padding-bottom: 12px;
   color: var(--muted);
   font-weight: 700;
   text-decoration: none;
 }
 
-.author:hover, .site-footer a:hover { color: var(--blue); }
+.language-link {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.author:hover, .language-link:hover, .site-footer a:hover { color: var(--blue); }
 .workflow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
