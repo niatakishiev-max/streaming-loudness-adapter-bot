@@ -39,6 +39,8 @@ body {
   gap: 20px;
 }
 
+.brand-row { position: relative; }
+
 .eyebrow {
   margin: 0 0 8px;
   color: var(--green);
@@ -54,26 +56,25 @@ h2 { margin-bottom: 8px; font-size: 24px; letter-spacing: 0; }
 p { color: var(--muted); line-height: 1.55; }
 .brand-lead { max-width: 620px; margin: 16px 0 0; font-size: 18px; }
 
-.header-links {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-}
-
-.author, .language-link {
+.author, .language-switch {
   padding-bottom: 12px;
   color: var(--muted);
   font-weight: 700;
   text-decoration: none;
 }
 
-.language-link {
+.language-switch {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-bottom: 0;
   color: var(--ink);
+  font-size: 13px;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-.author:hover, .language-link:hover, .site-footer a:hover { color: var(--blue); }
+.author:hover, .language-switch:hover, .site-footer a:hover { color: var(--blue); }
 .workflow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -227,6 +228,7 @@ progress { width: 100%; height: 14px; accent-color: var(--green); }
 @media (max-width: 800px) {
   .shell { padding: 18px; }
   .brand-row, .section-heading, .result-panel { display: block; }
+  .language-switch { position: static; display: inline-block; margin-top: 16px; }
   .upload-copy { padding: 28px; }
   .brand-lead { font-size: 16px; }
   h1 { font-size: 42px; }
