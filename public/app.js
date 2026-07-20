@@ -5,6 +5,18 @@ const state = {
   uploaded: false,
 };
 
+const russianPresetNotes = {
+  youtube: "\u0426\u0435\u043b\u044c \u0434\u043b\u044f \u0432\u0438\u0434\u0435\u043e-\u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b.",
+  spotify: "\u0426\u0435\u043b\u044c \u0434\u043b\u044f \u043c\u0443\u0437\u044b\u043a\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0441\u0442\u0440\u0438\u043c\u0438\u043d\u0433\u0430.",
+  apple: "\u0426\u0435\u043b\u044c \u0441 \u0443\u0447\u0435\u0442\u043e\u043c Apple Sound Check.",
+  tidal: "\u0426\u0435\u043b\u044c \u0434\u043b\u044f \u043c\u0443\u0437\u044b\u043a\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0441\u0442\u0440\u0438\u043c\u0438\u043d\u0433\u0430.",
+  amazon: "\u0426\u0435\u043b\u044c \u0434\u043b\u044f \u043c\u0443\u0437\u044b\u043a\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0441\u0442\u0440\u0438\u043c\u0438\u043d\u0433\u0430.",
+  deezer: "\u0426\u0435\u043b\u044c \u0434\u043b\u044f \u043c\u0443\u0437\u044b\u043a\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0441\u0442\u0440\u0438\u043c\u0438\u043d\u0433\u0430.",
+  soundcloud: "\u0426\u0435\u043b\u044c \u0434\u043b\u044f \u0432\u0435\u0431-\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u044f.",
+  podcast: "\u0426\u0435\u043b\u044c \u0434\u043b\u044f \u0440\u0435\u0447\u0438 \u0438 \u043f\u043e\u0434\u043a\u0430\u0441\u0442\u043e\u0432.",
+  safe: "\u0414\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0437\u0430\u043f\u0430\u0441 True Peak \u0434\u043b\u044f \u0441\u0436\u0430\u0442\u044b\u0445 \u0444\u043e\u0440\u043c\u0430\u0442\u043e\u0432.",
+};
+
 const fileInput = document.querySelector("#fileInput");
 const dropZone = document.querySelector("#dropZone");
 const statusText = document.querySelector("#statusText");
@@ -99,7 +111,7 @@ function showInputAnalysis(analysis) {
 function showResult(data) {
   setWorkflowStep("download");
   resultPanel.hidden = false;
-  document.querySelector("#resultTitle").textContent = `${data.preset.label} export ready`;
+  document.querySelector("#resultTitle").textContent = `${data.preset.label}: \u044d\u043a\u0441\u043f\u043e\u0440\u0442 \u0433\u043e\u0442\u043e\u0432`;
   document.querySelector("#outputLufs").textContent = formatNumber(data.outputAnalysis.input_i);
   document.querySelector("#outputPeak").textContent = formatNumber(data.outputAnalysis.input_tp, " dBTP");
   document.querySelector("#outputLra").textContent = formatNumber(data.outputAnalysis.input_lra);
@@ -115,17 +127,17 @@ async function downloadReport(event) {
 
   try {
     const response = await fetch(link.href);
-    if (!response.ok) throw new Error("Report is no longer available.");
+    if (!response.ok) throw new Error("\u041e\u0442\u0447\u0451\u0442 \u0431\u043e\u043b\u044c\u0448\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d.");
 
     const blob = await response.blob();
     const objectUrl = URL.createObjectURL(blob);
     const download = document.createElement("a");
     download.href = objectUrl;
-    download.download = "loudness-adapter-report.txt";
+    download.download = "loudness-adapter-otchet.txt";
     download.click();
     window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1_000);
   } catch (error) {
-    setStatus(`Error: ${error.message}`, 0);
+    setStatus(`\u041e\u0448\u0438\u0431\u043a\u0430: ${error.message}`, 0);
   }
 }
 
@@ -138,22 +150,22 @@ async function loadPresets() {
 
 async function uploadFile(file) {
   resultPanel.hidden = true;
-  setStatus("Creating upload session...", 5);
+  setStatus("\u0421\u043e\u0437\u0434\u0430\u0451\u043c \u0441\u0435\u0441\u0441\u0438\u044e \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438...", 5);
   const jobResponse = await fetch("/api/jobs", { method: "POST" });
   state.job = await jobResponse.json();
 
-  setStatus(`Uploading ${file.name}...`, 15);
+  setStatus(`\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u043c ${file.name}...`, 15);
   const uploadUrl = `${state.job.uploadUrl}&filename=${encodeURIComponent(file.name)}`;
   const response = await fetch(uploadUrl, { method: "PUT", body: file });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error || "Upload failed.");
+  if (!response.ok) throw new Error(data.error || "\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u043d\u0435 \u0443\u0434\u0430\u043b\u0430\u0441\u044c.");
 
   state.job.fileName = data.fileName;
   state.job.analysis = data.analysis;
   state.uploaded = true;
   setWorkflowStep("platform");
   renderPresets();
-  setStatus(`Analysis complete: ${data.fileName}. Choose a platform target below to create the WAV.`, 100);
+  setStatus(`\u0410\u043d\u0430\u043b\u0438\u0437 \u0433\u043e\u0442\u043e\u0432: ${data.fileName}. \u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0443 \u043d\u0438\u0436\u0435, \u0447\u0442\u043e\u0431\u044b \u0441\u043e\u0437\u0434\u0430\u0442\u044c WAV.`, 100);
   showInputAnalysis(data.analysis);
 }
 
@@ -162,24 +174,24 @@ async function processPreset(presetId) {
     state.selectedPreset = presetId;
     renderPresets();
     if (!state.job || !state.uploaded) {
-      setStatus("Choose an audio file first.", 0);
+      setStatus("\u0421\u043d\u0430\u0447\u0430\u043b\u0430 \u0432\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0430\u0443\u0434\u0438\u043e\u0444\u0430\u0439\u043b.", 0);
       return;
     }
 
-    setStatus("Rendering platform-ready WAV...", 35);
+    setStatus("\u0421\u043e\u0437\u0434\u0430\u0451\u043c WAV \u0434\u043b\u044f \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u043e\u0439 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438...", 35);
     const response = await fetch(`/api/jobs/${state.job.id}/process`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ secret: state.job.secret, preset: presetId }),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Processing failed.");
+    if (!response.ok) throw new Error(data.error || "\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u043d\u0435 \u0443\u0434\u0430\u043b\u0430\u0441\u044c.");
 
-    setStatus("Export complete.", 100);
+    setStatus("\u042d\u043a\u0441\u043f\u043e\u0440\u0442 \u0433\u043e\u0442\u043e\u0432.", 100);
     showResult(data);
   } catch (error) {
     console.error(error);
-    setStatus(`Error: ${error.message}`, 0);
+    setStatus(`\u041e\u0448\u0438\u0431\u043a\u0430: ${error.message}`, 0);
   }
 }
 async function handleFile(file) {
@@ -188,7 +200,7 @@ async function handleFile(file) {
     await uploadFile(file);
   } catch (error) {
     console.error(error);
-    setStatus(`Error: ${error.message}`, 0);
+    setStatus(`\u041e\u0448\u0438\u0431\u043a\u0430: ${error.message}`, 0);
   }
 }
 
@@ -206,5 +218,5 @@ dropZone.addEventListener("drop", (event) => {
   handleFile(event.dataTransfer.files[0]);
 });
 
-loadPresets().catch((error) => setStatus(`Error: ${error.message}`, 0));
+loadPresets().catch((error) => setStatus(`\u041e\u0448\u0438\u0431\u043a\u0430: ${error.message}`, 0));
 drawMeter();
