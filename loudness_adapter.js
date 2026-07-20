@@ -213,6 +213,31 @@ export async function processAudio(input, output, preset, analysis) {
   renameSync(tempOutput, output);
 }
 
+export async function exportMp3(input, output) {
+  const tempOutput = output + '.tmp.mp3';
+  if (existsSync(tempOutput)) rmSync(tempOutput, { force: true });
+
+  await run('ffmpeg', [
+    '-hide_banner',
+    '-y',
+    '-i',
+    input,
+    '-c:a',
+    'libmp3lame',
+    '-b:a',
+    '320k',
+    tempOutput,
+  ]);
+
+  if (statSync(tempOutput).size === 0) {
+    rmSync(tempOutput, { force: true });
+    throw new Error('ffmpeg created an empty MP3 output.');
+  }
+
+  rmSync(output, { force: true });
+  renameSync(tempOutput, output);
+}
+
 export function defaultOutputPath(input, presetName) {
   const parsed = path.parse(input);
   return path.join(parsed.dir, `${parsed.name}_${presetName}.wav`);

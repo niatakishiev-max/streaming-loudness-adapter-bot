@@ -116,6 +116,7 @@ function showResult(data) {
   document.querySelector("#outputPeak").textContent = formatNumber(data.outputAnalysis.input_tp, " dBTP");
   document.querySelector("#outputLra").textContent = formatNumber(data.outputAnalysis.input_lra);
   document.querySelector("#downloadWav").href = data.outputUrl;
+  document.querySelector("#downloadMp3").href = data.mp3Url;
   document.querySelector("#downloadReport").href = data.reportUrl;
   drawMeter(state.job?.analysis, data.outputAnalysis);
 }

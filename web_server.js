@@ -2,7 +2,7 @@ import { createReadStream, createWriteStream, existsSync, mkdirSync, readFileSyn
 import { createServer } from "node:http";
 import path from "node:path";
 import { URL } from "node:url";
-import { PRESETS, analyze, formatReport, hasFfmpeg, processAudio, reportPathFor } from "./loudness_adapter.js";
+import { PRESETS, analyze, exportMp3, formatReport, hasFfmpeg, processAudio, reportPathFor } from "./loudness_adapter.js";
 
 const port = Number(process.env.PORT || 3000);
 const workDir = path.join(process.cwd(), "web_work");
@@ -190,20 +190,23 @@ async function handleApi(request, response, url) {
     job.processing = true;
     const parsed = path.parse(job.inputPath);
     const outputPath = path.join(parsed.dir, `${parsed.name}_${presetName}.wav`);
+    const mp3Path = path.join(parsed.dir, parsed.name + '_' + presetName + '.mp3');
     const presetAnalysis = await analyze(job.inputPath, preset);
     await processAudio(job.inputPath, outputPath, preset, presetAnalysis);
     const outputAnalysis = await analyze(outputPath, { ...preset, chain: [] });
+    await exportMp3(outputPath, mp3Path);
     const reportPath = reportPathFor(outputPath);
     writeFileSync(reportPath, formatReport(job.inputPath, outputPath, presetName, preset, presetAnalysis, outputAnalysis), "utf8");
 
     rmSync(job.inputPath, { force: true });
-    Object.assign(job, { outputPath, reportPath, outputAnalysis, presetName, processing: false, lastTouchedAt: Date.now() });
+    Object.assign(job, { outputPath, mp3Path, reportPath, outputAnalysis, presetName, processing: false, lastTouchedAt: Date.now() });
     sendJson(response, 200, {
       preset: publicPresetList().find((item) => item.id === presetName),
       inputAnalysis: presetAnalysis,
       outputAnalysis,
       outputSize: statSync(outputPath).size,
       outputUrl: `/download/${job.id}/${job.secret}/output`,
+      mp3Url: '/download/' + job.id + '/' + job.secret + '/mp3',
       reportUrl: `/download/${job.id}/${job.secret}/report`,
     });
     return true;
@@ -216,6 +219,7 @@ async function handleApi(request, response, url) {
       return true;
     }
     if (parts[3] === "output" && job.outputPath) return download(response, job, job.outputPath);
+    if (parts[3] === "mp3" && job.mp3Path) return download(response, job, job.mp3Path);
     if (parts[3] === "report" && job.reportPath) return download(response, job, job.reportPath);
     response.writeHead(404).end("File is not ready.");
     return true;
