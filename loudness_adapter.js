@@ -46,6 +46,20 @@ export const PRESETS = {
     lra: 11,
     notes: "Music streaming delivery target.",
   },
+  yandex_music: {
+    label: "Yandex Music",
+    targetI: -14,
+    truePeak: -1.0,
+    lra: 11,
+    notes: "Recommended safe streaming delivery target.",
+  },
+  vk_music: {
+    label: "VK Music",
+    targetI: -14,
+    truePeak: -1.0,
+    lra: 11,
+    notes: "Recommended safe streaming delivery target.",
+  },
   soundcloud: {
     label: "SoundCloud",
     targetI: -14,
@@ -84,6 +98,8 @@ Presets:
   tidal    -14 LUFS, -1.0 dBTP
   amazon   -14 LUFS, -1.0 dBTP
   deezer   -15 LUFS, -1.0 dBTP
+  yandex_music -14 LUFS, -1.0 dBTP
+  vk_music -14 LUFS, -1.0 dBTP
   soundcloud -14 LUFS, -1.0 dBTP
   podcast  -16 LUFS, -1.0 dBTP
 `);
