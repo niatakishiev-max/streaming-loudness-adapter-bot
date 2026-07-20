@@ -52,6 +52,7 @@ h1, h2, p { margin-top: 0; }
 h1 { margin-bottom: 0; font-size: clamp(42px, 8vw, 86px); line-height: .95; letter-spacing: 0; }
 h2 { margin-bottom: 8px; font-size: 24px; letter-spacing: 0; }
 p { color: var(--muted); line-height: 1.55; }
+.brand-lead { max-width: 620px; margin: 16px 0 0; font-size: 18px; }
 
 .author {
   padding-bottom: 12px;
@@ -215,6 +216,7 @@ progress { width: 100%; height: 14px; accent-color: var(--green); }
   .shell { padding: 18px; }
   .brand-row, .section-heading, .result-panel { display: block; }
   .upload-copy { padding: 28px; }
+  .brand-lead { font-size: 16px; }
   .upload-copy h2 { font-size: 32px; }
   .analysis-grid, .preset-grid, .workflow { grid-template-columns: 1fr; }
   .actions { display: grid; margin-top: 16px; }
