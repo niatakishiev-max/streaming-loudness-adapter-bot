@@ -215,14 +215,14 @@ progress { width: 100%; height: 14px; accent-color: var(--green); }
 .preset-card p { margin-bottom: 0; font-size: 14px; }
 
 .result-panel {
-  align-items: stretch;
+  display: block;
   margin-top: 28px;
   border: 1px solid var(--line);
   background: #e7f0eb;
   padding: 22px;
 }
-.compact { margin: 0; flex: 1; }
-.actions { display: flex; gap: 10px; align-items: center; }
+.result-panel .compact { margin: 18px 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .action.primary { background: var(--blue); color: white; border-color: var(--blue); }
 
 @media (max-width: 800px) {
